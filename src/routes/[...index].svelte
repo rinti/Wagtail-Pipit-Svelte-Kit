@@ -13,7 +13,7 @@
         const containerName = payload.component_name
         let container
 
-        if(containerName === 'HomePage') {
+        if(containerName !== 'HomePage') {
             container = (await import('$lib/pages/HomePage.svelte')).default
         } else {
             container = (await import('$lib/pages/ArticlePage.svelte')).default
