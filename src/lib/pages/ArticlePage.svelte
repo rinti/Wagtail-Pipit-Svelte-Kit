@@ -6,7 +6,7 @@
 
 <div>
 	<h1>{title}</h1>
-	<p>{@html rich_text}</p>
+	{@html rich_text}
     <Counter />
 </div>
 
