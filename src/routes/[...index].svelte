@@ -1,25 +1,20 @@
 <script context="module">
-    export const prerender = true;
+	import LazyPages from '$lib/pages/LazyPages';
+
 	export async function load({ page, fetch, session, context }) {
 		const response = await fetch(`/wagtail?html_path=${page.path}`);
 		const payload = await response.json();
-
-		const containerName = payload.component_name;
 		const props = payload.component_props;
-		let container;
 
-		if (containerName === 'HomePage') {
-			container = (await import('$lib/pages/HomePage.svelte')).default;
-		} else {
-			container = (await import('$lib/pages/ArticlePage.svelte')).default;
-		}
+		const container = await LazyPages(payload.component_name);
 
 		return { props: { container, props } };
 	}
 </script>
 
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+	import { browser } from '$app/env';
 
 	export let props;
 	export let container;
