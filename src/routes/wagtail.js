@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import {
     keysToCamelFromSnake,
-} from '$lib/utils/CaseConvert';
+} from '$lib/utils/case-convert';
 
 export function get(req, res) {
     const htmlPath = req.query.get('html_path')
