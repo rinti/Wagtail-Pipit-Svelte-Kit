@@ -8,6 +8,7 @@
 
 		const container = await LazyPages(payload.component_name);
 
+
 		return { props: { container, props } };
 	}
 </script>
@@ -19,7 +20,19 @@
 	export let props;
 	export let container;
 
+    let WagtailUserbar;
+
+    onMount(async () => {
+        if(props.wagtail_userbar.html) {
+            WagtailUserbar = (await import('$lib/WagtailUserbar.svelte')).default
+        }
+    })
+
 	import '../app.css';
 </script>
 
 <svelte:component this="{container}" {...props} />
+
+{#if WagtailUserbar}
+    <WagtailUserbar {...props.wagtail_userbar} />
+{/if}

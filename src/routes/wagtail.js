@@ -10,11 +10,7 @@ export function get(req, res) {
 		cookie: req.headers.cookie
 	};
 
-	/* const response = await fetch(url, { headers }); */
-	/* const payload = await response.json(); */
-	/* const containerName = payload.component_name; */
-
-	return fetch(url)
+	return fetch(url, {headers})
 		.then((r) => r.json())
 		.then((payload) => {
 			return {
