@@ -4,9 +4,9 @@
 	export async function load({ page, fetch, session, context }) {
 		const response = await fetch(`/wagtail?html_path=${page.path}`);
 		const payload = await response.json();
-		const props = payload.component_props;
+		const props = payload.componentProps;
 
-		const container = await LazyPages(payload.component_name);
+		const container = await LazyPages(payload.componentName);
 
 
 		return { props: { container, props } };
@@ -23,7 +23,7 @@
     let WagtailUserbar;
 
     onMount(async () => {
-        if(props.wagtail_userbar.html) {
+        if(props?.wagtailUserbar?.html) {
             WagtailUserbar = (await import('$lib/WagtailUserbar.svelte')).default
         }
     })
@@ -34,5 +34,5 @@
 <svelte:component this="{container}" {...props} />
 
 {#if WagtailUserbar}
-    <WagtailUserbar {...props.wagtail_userbar} />
+    <WagtailUserbar {...props.wagtailUserbar} />
 {/if}

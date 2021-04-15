@@ -1,4 +1,7 @@
 import fetch from 'node-fetch';
+import {
+    keysToCamelFromSnake,
+} from '$lib/utils/CaseConvert';
 
 export function get(req, res) {
     const htmlPath = req.query.get('html_path')
@@ -14,7 +17,7 @@ export function get(req, res) {
 		.then((r) => r.json())
 		.then((payload) => {
 			return {
-				body: payload
+                body: keysToCamelFromSnake(payload)
 			};
 		});
 }
