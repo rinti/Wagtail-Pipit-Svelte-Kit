@@ -5,7 +5,17 @@ const baseUrl = 'http://localhost:8081/wt/api/nextjs';
 
 export async function get(req, res) {
 	const htmlPath = req.query.get('html_path');
-	const url = `${baseUrl}/v1/page_by_path/?html_path=${htmlPath}`;
+	const previewToken = req.query.get('previewToken');
+	const contentType = req.query.get('contentType');
+	let url;
+
+	if (htmlPath) {
+		url = `${baseUrl}/v1/page_by_path/?html_path=${htmlPath}`;
+	}
+
+	if (previewToken) {
+		url = `${baseUrl}/v1/page_preview/?token=${previewToken}&content_type=${contentType}`;
+	}
 
 	const headers = {
 		'Content-Type': 'application/json',
@@ -15,11 +25,11 @@ export async function get(req, res) {
 	const resp = await fetch(url, { headers });
 	const payload = await resp.json();
 
-    if(resp.status === 404) {
-        return {
-            body: { componentName: "NotFoundPage", componentProps: {} }
-        }
-    }
+	if (resp.status === 404) {
+		return {
+			body: { componentName: 'NotFoundPage', componentProps: {} }
+		};
+	}
 
 	return {
 		body: keysToCamelFromSnake(payload)

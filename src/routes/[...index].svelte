@@ -2,7 +2,14 @@
 	import LazyPages from '$lib/pages/LazyPages';
 
 	export async function load({ page, fetch, session, context }) {
-		const response = await fetch(`/wagtail?html_path=${page.path}`);
+        let response
+
+        if(page.path === '/api/preview') {
+            response = await fetch(`/wagtail?previewToken=${page.query.get('token')}&contentType=${page.query.get('content_type')}`);
+        } else {
+            response = await fetch(`/wagtail?html_path=${page.path}`);
+        }
+
 		const payload = await response.json();
 
 		const props = payload.componentProps;
