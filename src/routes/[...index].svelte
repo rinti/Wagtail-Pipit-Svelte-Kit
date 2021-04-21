@@ -20,6 +20,22 @@
 	export let props;
 	export let container;
 
+    const {
+        seoHtmlTitle,
+        seoMetaDescription,
+        seoOgTitle,
+        seoOgDescription,
+        seoOgUrl,
+        seoOgImage,
+        seoOgType,
+        seoTwitterTitle,
+        seoTwitterDescription,
+        seoTwitterUrl,
+        seoTwitterImage,
+        seoMetaRobots,
+        canonicalLink,
+    } = props.seo;
+
     let WagtailUserbar;
 
     onMount(async () => {
@@ -30,6 +46,48 @@
 
 	import '../app.css';
 </script>
+
+<svelte:head>
+	<title>Title: {seoHtmlTitle}</title>
+
+    {#if seoMetaDescription}
+        <meta name="description" content={seoMetaDescription}>
+    {/if}
+    {#if seoOgTitle}
+        <meta property="og:title" content={seoOgTitle}>
+    {/if}
+    {#if seoOgDescription}
+        <meta property="og:description" content={seoOgDescription}>
+    {/if}
+    {#if seoOgUrl}
+        <meta property="og:url" content={seoOgUrl}>
+    {/if}
+    {#if seoOgImage}
+        <meta property="og:image" content={seoOgImage}>
+    {/if}
+    {#if seoOgType}
+        <meta property="og:type" content={seoOgType}>
+    {/if}
+    {#if seoTwitterTitle}
+        <meta property="twitter:title" content={seoTwitterTitle}>
+    {/if}
+    {#if seoTwitterDescription}
+        <meta property="twitter:description" content={seoTwitterDescription}>
+    {/if}
+    {#if seoTwitterUrl}
+        <meta property="twitter:url" content={seoTwitterUrl}>
+    {/if}
+    {#if seoTwitterImage}
+        <meta property="twitter:image" content={seoTwitterImage}>
+    {/if}
+    {#if seoMetaRobots}
+        <meta name="robots" content={seoMetaRobots}>
+    {/if}
+    {#if canonicalLink}
+        <link rel="canonical" href={canonicalLink}>
+    {/if}
+
+</svelte:head>
 
 <svelte:component this="{container}" {...props} />
 

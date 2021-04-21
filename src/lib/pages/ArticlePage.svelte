@@ -1,17 +1,14 @@
 <script>
 	import Counter from '$lib/Counter.svelte';
 	export let title
-    export let rich_text
+    export let richText
 </script>
 
 <div>
 	<h1>{title}</h1>
-	{@html rich_text}
+	{@html richText}
     <Counter />
 </div>
 
 <style>
-	div {
-		color: darkcyan;
-	}
 </style>
