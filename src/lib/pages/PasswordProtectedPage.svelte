@@ -1,55 +1,51 @@
 <script type="ts">
+	import LazyPages from '$lib/pages/LazyPages';
+
     export let restrictionId: number;
     export let pageId: number;
     export let csrfToken: string;
 
-	let values: string = '';
+	let password: string;
 	let error: string;
 	let pageData: object;
+    let container;
 
 	const handlePasswordChange = (e) => {
-		const { name, value } = e.target;
-		values = { ...values, [name]: value };
+        password = e.target.value
 	};
 
-    const handleFormChange = async (e) => {
-        e.preventDefault();
+    const handleFormChange = async () => {
+        const resp = await fetch('/wagtail?type=password_protected_page', {method: 'POST', body: JSON.stringify({restrictionId, pageId, password}), headers: {'X-CSRFToken': csrfToken}})
+        const data = await resp.json()
 
-        /* try { */
-        /*     const resp = await getPasswordProtectedPage( */
-        /*         restrictionId, */
-        /*         pageId, */
-        /*         { */
-        /*             ...values, */
-        /*         }, */
-        /*         { */
-        /*             headers: { */
-        /*                 'X-CSRFToken': csrfToken, */
-        /*             }, */
-        /*         } */
-        /*     ); */
+        if (data.error) {
+            error = data.error
+        } else {
+            pageData = data
+            container = await LazyPages(pageData.componentName)
+        }
 
-        /*     pageData = resp; */
-        /* } catch (e) { */
-        /*     error = 'Invalid password'; */
-        /* } */
     };
 </script>
 
+{#if pageData}
+    <svelte:component this="{container}" {...pageData.componentProps} />
+{:else}
 <div>
 	<h1>Password is required</h1>
 	<p>You need a password to access this website</p>
 
-	{!!error &&
+	{#if error}
 	<p>{error}</p>
-	}
+	{/if}
 	<p>
 		<input
 			type="password"
 			name="password"
-			on:change={handlePasswordChange}
+			on:keyup={handlePasswordChange}
 			placeholder="Password"
 		/>
 	</p>
 	<button on:click={handleFormChange}>Continue</button>
 </div>
+{/if}

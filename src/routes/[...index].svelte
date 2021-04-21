@@ -8,6 +8,9 @@
 
 		const container = await LazyPages(payload.componentName);
 
+        if(!container) {
+            throw Error(`${payload.componentName} could not be found`)
+        }
 
 		return { props: { container, props } };
 	}
@@ -34,7 +37,7 @@
         seoTwitterImage,
         seoMetaRobots,
         canonicalLink,
-    } = props.seo;
+    } = props.seo || {};
 
     let WagtailUserbar;
 

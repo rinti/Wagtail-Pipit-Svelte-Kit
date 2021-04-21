@@ -1,11 +1,10 @@
 import fetch from 'node-fetch';
-import {
-    keysToCamelFromSnake,
-} from '$lib/utils/case-convert';
+import { keysToCamelFromSnake, keysToSnakeFromCamel } from '$lib/utils/case-convert';
 
-export function get(req, res) {
-    const htmlPath = req.query.get('html_path')
-	const baseUrl = 'http://localhost:8081/wt/api/nextjs';
+const baseUrl = 'http://localhost:8081/wt/api/nextjs';
+
+export async function get(req, res) {
+	const htmlPath = req.query.get('html_path');
 	const url = `${baseUrl}/v1/page_by_path/?html_path=${htmlPath}`;
 
 	const headers = {
@@ -13,11 +12,33 @@ export function get(req, res) {
 		cookie: req.headers.cookie
 	};
 
-	return fetch(url, {headers})
-		.then((r) => r.json())
-		.then((payload) => {
-			return {
-                body: keysToCamelFromSnake(payload)
-			};
-		});
+	const resp = await fetch(url, { headers });
+	const payload = await resp.json();
+
+	return {
+		body: keysToCamelFromSnake(payload)
+	};
+}
+
+export async function post(req, res) {
+	const data = JSON.parse(req.body);
+	let responseData;
+
+	if (req.query.get('type') === 'password_protected_page') {
+		responseData = await getPasswordProtectedPage(data, req.headers['x-csrftoken']);
+		return { body: responseData };
+	}
+}
+
+export async function getPasswordProtectedPage(data, csrfToken) {
+	const url = `${baseUrl}/v1/password_protected_page/${data.restrictionId}/${data.pageId}/`;
+	const response = await fetch(url, {
+		body: JSON.stringify({ password: data.password }),
+		method: 'POST',
+		headers: { 'X-CSRFToken': csrfToken, 'Content-Type': 'application/json' }
+	});
+	if (response.status === 200) {
+		return keysToCamelFromSnake(await response.json());
+	}
+	return { error: 'Invalid password' };
 }
