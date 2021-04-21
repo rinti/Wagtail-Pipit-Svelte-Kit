@@ -15,6 +15,12 @@ export async function get(req, res) {
 	const resp = await fetch(url, { headers });
 	const payload = await resp.json();
 
+    if(resp.status === 404) {
+        return {
+            body: { componentName: "NotFoundPage", componentProps: {} }
+        }
+    }
+
 	return {
 		body: keysToCamelFromSnake(payload)
 	};

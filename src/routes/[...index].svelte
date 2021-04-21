@@ -4,6 +4,7 @@
 	export async function load({ page, fetch, session, context }) {
 		const response = await fetch(`/wagtail?html_path=${page.path}`);
 		const payload = await response.json();
+
 		const props = payload.componentProps;
 
 		const container = await LazyPages(payload.componentName);

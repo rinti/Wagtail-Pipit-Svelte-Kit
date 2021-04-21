@@ -3,6 +3,7 @@ export default async function (containerName: string) {
 		HomePage: (await import('$lib/pages/HomePage.svelte')).default,
 		ArticlePage: (await import('$lib/pages/ArticlePage.svelte')).default,
 		PasswordProtectedPage: (await import('$lib/pages/PasswordProtectedPage.svelte')).default,
+		NotFoundPage: (await import('$lib/pages/NotFoundPage.svelte')).default,
 		PureHtmlPage: (await import('$lib/pages/PureHtmlPage.svelte')).default
 	}[containerName];
 }
