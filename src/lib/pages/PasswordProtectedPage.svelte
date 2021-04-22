@@ -1,6 +1,4 @@
 <script type="ts">
-	import LazyPages from '$lib/pages/LazyPages';
-
     export let restrictionId: number;
     export let pageId: number;
     export let csrfToken: string;
@@ -22,6 +20,8 @@
             error = data.error
         } else {
             pageData = data
+            // Lazily import the pages to avoid circular imports
+            const LazyPages = (await import('$lib/pages/LazyPages')).default
             container = await LazyPages(pageData.componentName)
         }
 

@@ -1,13 +1,13 @@
 <script>
-	import Counter from '$lib/Counter.svelte';
+	import Hero from '$lib/Hero.svelte';
 	export let title
     export let richText
 </script>
 
+<Hero {title} />
+
 <div>
-	<h1>{title}</h1>
 	{@html richText}
-    <Counter />
 </div>
 
 <style>
