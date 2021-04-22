@@ -12,7 +12,7 @@ E.g.
 
 ```sh
 $ cd My-Awesome-Project
-$ rm -rf frontend && git clone git@github.com:rinti/Wagtail-Pipit-Svelte-Kit.git frontend
+$ rm -rf frontend && npx degit rinti/Wagtail-Pipit-Svelte-Kit frontend
 ```
 
 Now you can use Svelte as a frontend!
